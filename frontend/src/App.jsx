@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import './App.css'
 
 const SPORTS = [
   { name: "Soccer", value: "soccer" },
@@ -15,6 +16,8 @@ const LEAGUES = {
     { name: "NBA", value: "nba" },
   ]
 }
+
+const STEP_LABELS = ['Sport', 'League', 'Teams', 'Dates', 'Confirm']
 
 function App() {
   const [step, setStep] = useState(1)
@@ -53,8 +56,8 @@ function App() {
       })
     })
       .then(response => response.blob())
-      .then(data => {
-        const url = window.URL.createObjectURL(data)
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
         a.download = 'calendar.ics'
@@ -63,55 +66,76 @@ function App() {
   }
 
   return (
-    <div>
-      {/* Progress bar */}
-      <div style={{ display: 'flex', gap: '1rem', padding: '1rem' }}>
-        {['Sport', 'League', 'Teams', 'Dates', 'Confirm'].map((label, i) => (
-          <div key={label} style={{ fontWeight: step === i + 1 ? 'bold' : 'normal', opacity: step >= i + 1 ? 1 : 0.4 }}>
-            {i + 1}. {label}
+    <div className="app">
+      {/* Progress indicator */}
+      <div className="progress">
+        {STEP_LABELS.map((label, i) => (
+          <div
+            key={label}
+            className={`progress-step ${step === i + 1 ? 'active' : ''} ${step > i + 1 ? 'done' : ''}`}
+          >
+            {label}
           </div>
         ))}
       </div>
 
-      {/* Sport */}
+      {/* Step 1 - Sport */}
       {step === 1 && (
         <div>
-          <h2>Pick a Sport</h2>
-          {SPORTS.map(s => (
-            <button key={s.value} onClick={() => { setSport(s.value); setStep(2) }}>
-              {s.name}
-            </button>
-          ))}
+          <h2>Pick a sport</h2>
+          <div className="choice-grid">
+            {SPORTS.map(s => (
+              <button
+                key={s.value}
+                className="choice-button"
+                onClick={() => { setSport(s.value); setStep(2) }}
+              >
+                {s.name}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* League */}
+      {/* Step 2 - League */}
       {step === 2 && (
         <div>
-          <h2>Pick a League</h2>
-          {LEAGUES[sport].map(l => (
-            <button key={l.value} onClick={() => { setLeague(l.value); setStep(3) }}>
-              {l.name}
-            </button>
-          ))}
+          <h2>Pick a league</h2>
+          <div className="choice-grid">
+            {LEAGUES[sport].map(l => (
+              <button
+                key={l.value}
+                className="choice-button"
+                onClick={() => { setLeague(l.value); setStep(3) }}
+              >
+                {l.name}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
       {/* Step 3 - Teams */}
       {step === 3 && (
         <div>
-          <h2>Pick Your Teams</h2>
-          {teams.map(team => (
-            <div key={team.abbreviation}>
-              <input
-                type="checkbox"
-                checked={selected.includes(team.abbreviation)}
-                onChange={() => toggleTeam(team.abbreviation)}
-              />
-              <label>{team.name}</label>
-            </div>
-          ))}
-          <button onClick={() => setStep(4)} disabled={selected.length === 0}>
+          <h2>Pick your teams</h2>
+          <div className="team-grid">
+            {teams.map(team => (
+              <div
+                key={team.abbreviation}
+                className={`team-card ${selected.includes(team.abbreviation) ? 'selected' : ''}`}
+                onClick={() => toggleTeam(team.abbreviation)}
+              >
+                <img src={team.logo} alt={team.name} />
+                <span>{team.name}</span>
+              </div>
+            ))}
+          </div>
+          <button
+            className="primary-button"
+            onClick={() => setStep(4)}
+            disabled={selected.length === 0}
+          >
             Next
           </button>
         </div>
@@ -120,10 +144,22 @@ function App() {
       {/* Step 4 - Dates */}
       {step === 4 && (
         <div>
-          <h2>Pick a Date Range</h2>
-          <label>Start Date: <input type="date" value={beginDate} onChange={e => setBeginDate(e.target.value)} /></label>
-          <label>End Date: <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} /></label>
-          <button onClick={() => setStep(5)} disabled={!beginDate || !endDate}>
+          <h2>Pick a date range</h2>
+          <div className="date-row">
+            <div className="date-field">
+              <label>Start date</label>
+              <input type="date" value={beginDate} onChange={e => setBeginDate(e.target.value)} />
+            </div>
+            <div className="date-field">
+              <label>End date</label>
+              <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+            </div>
+          </div>
+          <button
+            className="primary-button"
+            onClick={() => setStep(5)}
+            disabled={!beginDate || !endDate}
+          >
             Next
           </button>
         </div>
@@ -133,11 +169,25 @@ function App() {
       {step === 5 && (
         <div>
           <h2>Confirm</h2>
-          <p>Sport: {sport}</p>
-          <p>League: {league}</p>
-          <p>Teams: {selected.join(', ')}</p>
-          <p>From: {beginDate} to {endDate}</p>
-          <button onClick={submitSchedule}>Create Calendar</button>
+          <div className="summary-row">
+            <span className="summary-label">Sport</span>
+            <span>{sport}</span>
+          </div>
+          <div className="summary-row">
+            <span className="summary-label">League</span>
+            <span>{league}</span>
+          </div>
+          <div className="summary-row">
+            <span className="summary-label">Teams</span>
+            <span>{selected.join(', ')}</span>
+          </div>
+          <div className="summary-row">
+            <span className="summary-label">Dates</span>
+            <span>{beginDate} to {endDate}</span>
+          </div>
+          <button className="primary-button" onClick={submitSchedule}>
+            Create calendar
+          </button>
         </div>
       )}
     </div>

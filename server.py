@@ -30,7 +30,8 @@ async def get_teams(sport: str, league: str):
         teams = [
             {
                 "name": team["team"]["displayName"],
-                "abbreviation": team["team"]["abbreviation"]
+                "abbreviation": team["team"]["abbreviation"],
+                "logo": team["team"]["logos"][0]["href"]
             }
             for team in data["sports"][0]["leagues"][0]["teams"]
         ]
