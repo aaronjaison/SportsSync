@@ -6,6 +6,8 @@ from schedules.soccer import SoccerSchedule
 from schedules.basketball import BasketballSchedule
 from schedules.base import CalendarCreator
 from fastapi.responses import FileResponse
+from schedules.football import FootballSchedule
+from schedules.baseball import BaseballSchedule
 app = FastAPI()
 
 
@@ -17,9 +19,13 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
+
+
 SCHEDULE_CLASSES = {
     "soccer": SoccerSchedule,
-    "basketball": BasketballSchedule
+    "basketball": BasketballSchedule,
+    "football": FootballSchedule,
+    "baseball": BaseballSchedule
 }
 
 @app.get("/teams/{sport}/{league}")

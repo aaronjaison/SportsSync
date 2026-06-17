@@ -8,10 +8,11 @@ class CalendarCreator:
         c = Calendar()
         for event_data in self.events:
             e = Event()
-            e.summary = event_data["name"]
+            e.name = event_data["name"]
             e.begin = event_data["start_time"]
             e.end = event_data["start_time"] + datetime.timedelta(hours=event_data["duration_hours"])
             e.description = event_data["url"]
+            print("setting summary to: ", e.name)
             c.events.add(e)
 
         with open(filename, 'w') as file:
