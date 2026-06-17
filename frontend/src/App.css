@@ -12,9 +12,28 @@ body {
 .app {
   max-width: 720px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 1.5rem 1.5rem 4rem;
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.app-header .logo{
+  width: auto;
+  height: 30px;
+
+}
+
+.app-header .app-name{
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1A1A1A;
+}
 /* Progress bar */
 .progress {
   display: flex;

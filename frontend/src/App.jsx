@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import logo from './assets/sportsync-logo-trimmed.png'
 
 const SPORTS = [
   { name: "Soccer", value: "soccer" },
@@ -106,6 +107,10 @@ function App() {
 
   return (
     <div className="app">
+      <div className="app-header">
+        <img src={logo} alt = "SportsSync logo" className = "logo" />
+        <span className = "app-name">SportsSync</span>
+      </div>
       {/* Progress indicator */}
       <div className="progress">
         {stepLabels.map((label, i) => (
