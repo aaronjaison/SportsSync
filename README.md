@@ -1,6 +1,6 @@
-# SportSync
+# SportsSync
 
-SportSync is a full-stack web application that allows sports fans to generate and download personalized `.ics` calendar files for their favorite basketball and soccer teams, making it seamless to sync live match schedules directly to Apple Calendar, Google Calendar, or Outlook.
+SportsSync is a full-stack web application that allows sports fans to generate and download personalized `.ics` calendar files for their favorite basketball and soccer teams, making it seamless to sync live match schedules directly to Apple Calendar, Google Calendar, or Outlook.
 
 Built using a modern **React** frontend and a lightweight **FastAPI** backend, the platform leverages the **ESPN API** to fetch real-time game data and compile it on the fly into standard, platform-agnostic calendar streams.
 
